@@ -1,8 +1,10 @@
 import { site, socialLinks } from '../data/portfolioContent'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../hooks/useLanguage'
 
 function ContactSection() {
   const { ref, isVisible } = useScrollReveal()
+  const { t } = useLanguage()
 
   return (
     <section id="contact" className="px-6 py-24 md:px-8">
@@ -12,16 +14,14 @@ function ContactSection() {
       >
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="font-headline mb-6 text-4xl font-black tracking-tight text-on-surface md:text-6xl">
-            Ready to build something{' '}
+            {t.contact.title}{' '}
             <span className="bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
-              extraordinary
+              {t.contact.titleHighlight}
             </span>
             ?
           </h2>
           <p className="mx-auto mb-12 max-w-2xl text-lg text-on-surface-variant">
-            I'm currently open to new opportunities and collaborations. Whether
-            you have a project in mind or just want to say hi, feel free to reach
-            out.
+            {t.contact.description}
           </p>
 
           <div className="relative overflow-hidden rounded-3xl border border-outline-variant/20 bg-surface-container p-8 md:p-12">
@@ -34,7 +34,7 @@ function ContactSection() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
                 </span>
-                Available for work
+                {t.contact.available}
               </div>
 
               <a

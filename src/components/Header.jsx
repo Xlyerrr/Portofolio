@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import { navItems, site } from '../data/portfolioContent'
 import { useScrollProgress, useActiveSection } from '../hooks/useScrollReveal'
+import { useLanguage } from '../hooks/useLanguage'
+
+function getNestedValue(obj, path) {
+  return path.split('.').reduce((acc, key) => acc?.[key], obj)
+}
 
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const progress = useScrollProgress()
   const activeSection = useActiveSection(['home', 'about', 'projects', 'experience', 'contact'])
+  const { lang, toggleLang, t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -44,7 +50,7 @@ function Header() {
           <div className="hidden gap-8 md:flex">
             {navItems.map((item) => (
               <a
-                key={item.label}
+                key={item.id}
                 className={`font-headline transition-all duration-200 ${
                   activeSection === item.id
                     ? 'font-bold text-primary'
@@ -52,7 +58,7 @@ function Header() {
                 }`}
                 href={item.href}
               >
-                {item.label}
+                {getNestedValue(t, item.labelKey)}
                 {activeSection === item.id && (
                   <span className="mt-1 block h-0.5 w-full rounded-full bg-primary" />
                 )}
@@ -60,24 +66,41 @@ function Header() {
             ))}
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden items-center gap-3 md:flex">
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-1 rounded-full border border-outline-variant/30 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-on-surface-variant transition-all hover:border-primary/50 hover:text-primary"
+              aria-label="Switch language"
+            >
+              <span className="material-symbols-outlined text-base">language</span>
+              {lang === 'en' ? 'ID' : 'EN'}
+            </button>
             <a
               className="rounded-full bg-gradient-to-r from-primary to-primary-container px-6 py-2 text-sm font-bold text-on-primary-fixed transition-transform duration-200 hover:scale-95"
               href={`mailto:${site.email}`}
             >
-              Contact Me
+              {t.nav.contactMe}
             </a>
           </div>
 
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-lg text-on-surface md:hidden"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            <span className="material-symbols-outlined">
-              {mobileOpen ? 'close' : 'menu'}
-            </span>
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              onClick={toggleLang}
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-on-surface-variant"
+              aria-label="Switch language"
+            >
+              <span className="material-symbols-outlined text-base">language</span>
+            </button>
+            <button
+              className="flex h-10 w-10 items-center justify-center rounded-lg text-on-surface"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              <span className="material-symbols-outlined">
+                {mobileOpen ? 'close' : 'menu'}
+              </span>
+            </button>
+          </div>
         </nav>
 
         {mobileOpen && (
@@ -85,7 +108,7 @@ function Header() {
             <div className="flex flex-col gap-1 px-6 py-4">
               {navItems.map((item) => (
                 <a
-                  key={item.label}
+                  key={item.id}
                   className={`rounded-lg px-4 py-3 font-headline transition-colors ${
                     activeSection === item.id
                       ? 'bg-primary/10 font-bold text-primary'
@@ -94,7 +117,7 @@ function Header() {
                   href={item.href}
                   onClick={handleNavClick}
                 >
-                  {item.label}
+                  {getNestedValue(t, item.labelKey)}
                 </a>
               ))}
               <a
@@ -102,7 +125,7 @@ function Header() {
                 href={`mailto:${site.email}`}
                 onClick={handleNavClick}
               >
-                Contact Me
+                {t.nav.contactMe}
               </a>
             </div>
           </div>

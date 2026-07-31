@@ -1,8 +1,10 @@
 import { about, skills } from '../data/portfolioContent'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../hooks/useLanguage'
 
 function AboutSection() {
   const { ref, isVisible } = useScrollReveal()
+  const { t, c } = useLanguage()
 
   return (
     <section id="about" className="bg-surface-container-low/50 py-24">
@@ -14,23 +16,23 @@ function AboutSection() {
           <div className="grid items-center gap-16 md:grid-cols-2">
             <div>
               <h2 className="font-label mb-6 text-sm font-bold uppercase tracking-[0.2em] text-primary">
-                {about.label}
+                {t.about.label}
               </h2>
               <p className="font-headline mb-8 text-3xl leading-tight font-black text-on-surface md:text-4xl">
-                {about.title}
+                {c.about.title}
               </p>
               <p className="mb-10 text-lg leading-relaxed text-on-surface-variant">
-                {about.description}
+                {c.about.description}
               </p>
 
               <div className="flex gap-8">
                 {about.stats.map((stat) => (
-                  <div key={stat.label}>
+                  <div key={stat.value}>
                     <div className="font-headline text-3xl font-black text-primary md:text-4xl">
                       {stat.value}
                     </div>
                     <div className="mt-1 text-xs uppercase tracking-widest text-on-surface-variant">
-                      {stat.label}
+                      {t.about.stats[stat.labelKey?.split('.').pop()] ?? stat.label}
                     </div>
                   </div>
                 ))}
@@ -52,7 +54,7 @@ function AboutSection() {
 
           <div className="mt-20">
             <h3 className="font-headline mb-10 text-center text-2xl font-black text-on-surface md:text-3xl">
-              Tech <span className="text-primary">Stack</span>
+              {t.about.techStack} <span className="text-primary">{t.about.techStackHighlight}</span>
             </h3>
             <div className="grid gap-6 md:grid-cols-3">
               {skills.map((skillGroup) => (

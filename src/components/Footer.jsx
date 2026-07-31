@@ -1,6 +1,9 @@
 import { site, socialLinks } from '../data/portfolioContent'
+import { useLanguage } from '../hooks/useLanguage'
 
 function Footer() {
+  const { t } = useLanguage()
+
   return (
     <footer
       id="socialLinks"
@@ -13,7 +16,7 @@ function Footer() {
               {site.fullName}
             </span>
             <p className="text-sm uppercase tracking-widest text-on-surface-variant">
-              &copy; {site.copyrightYear} {site.fullName}. Crafted with intent.
+              &copy; {site.copyrightYear} {site.fullName}. {t.footer.crafted}
             </p>
           </div>
 
@@ -38,7 +41,7 @@ function Footer() {
 
         <div className="mt-8 border-t border-outline-variant/10 pt-6 text-center">
           <p className="text-xs text-on-surface-variant/60">
-            Built with React, Vite, and Tailwind CSS
+            {t.footer.builtWith}
           </p>
         </div>
       </div>

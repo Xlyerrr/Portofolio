@@ -1,13 +1,19 @@
-import { experiences, education } from '../data/portfolioContent'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useLanguage } from '../hooks/useLanguage'
 
-const timelineItems = [
-  ...experiences.map((item) => ({ ...item, category: 'Work' })),
-  ...education.map((item) => ({ ...item, category: 'Education' })),
-].sort((a, b) => b.period.localeCompare(a.period))
+const getStartYear = (period) => {
+  const match = period.match(/(\d{4})/)
+  return match ? parseInt(match[1], 10) : 0
+}
 
 function ExperienceSection() {
   const { ref, isVisible } = useScrollReveal()
+  const { t, c } = useLanguage()
+
+  const timelineItems = [
+    ...c.experiences.map((item) => ({ ...item, category: t.experience.work })),
+    ...c.education.map((item) => ({ ...item, category: t.experience.education })),
+  ].sort((a, b) => getStartYear(b.period) - getStartYear(a.period))
 
   return (
     <section
@@ -18,11 +24,11 @@ function ExperienceSection() {
         <div ref={ref} className={`scroll-reveal ${isVisible ? 'is-visible' : ''}`}>
           <div className="mb-12 text-center">
             <h2 className="font-label mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">
-              Journey
+              {t.experience.label}
             </h2>
             <p className="font-headline text-4xl font-black text-on-surface md:text-5xl">
-              Experience &{' '}
-              <span className="text-primary">Education</span>
+              {t.experience.title}{' '}
+              <span className="text-primary">{t.experience.titleHighlight}</span>
             </p>
           </div>
 
